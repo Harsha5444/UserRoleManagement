@@ -1,0 +1,287 @@
+﻿@model List<AVUserRoleOrg.Models.UserDetailViewModel>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management Dashboard</title>
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }
+
+        .card-header {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .modal-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .btn-actions {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid p-4">
+        <div class="card shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h2 class="mb-0">
+                    <i class="fas fa-users me-2"></i>User Management
+                </h2>
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createUserModal">
+                    <i class="fas fa-plus me-1"></i>Create New User
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>User ID</th>
+                                <th>User Name</th>
+                                <th>Email</th>
+                                <th>User Login ID</th>
+                                <th>Organization</th>
+                                <th>Roles</th>
+                                <th>Status</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.UserID</td>
+                                    <td>@item.UserName</td>
+                                    <td>@item.Email</td>
+                                    <td>@item.UserLoginId</td>
+                                    <td>@item.OrgName (@item.OrgType)</td>
+                                    <td>
+                                        @string.Join(", ", item.Roles.Select(r => r.RoleName))
+                                    </td>
+                                    <td>
+                                        @if (item.IsActive)
+                                        {
+                                            <span class="badge bg-success">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">Inactive</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-actions">
+                                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editUserModal-@item.UserID">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#detailsUserModal-@item.UserID">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteUserModal-@item.UserID">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        @foreach (var item in Model)
+        {
+            <!-- Edit User Modal -->
+            <div class="modal fade" id="editUserModal-@item.UserID" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit User</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/User/Edit" method="post">
+                                <input type="hidden" name="UserID" value="@item.UserID" />
+                                <input type="hidden" name="OrgName" value="@item.OrgName" />
+
+                                <div class="mb-3">
+                                    <label class="form-label">User Name</label>
+                                    <input type="text" name="UserName" class="form-control" value="@item.UserName" required />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" name="Email" class="form-control" value="@item.Email" required />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">UserLoginID</label>
+                                    <input type="text" name="UserLoginId" class="form-control" value="@item.UserLoginId" required />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Organization</label>
+                                    <select name="OrganizationID" class="form-select" required>
+                                        @foreach (var org in ViewBag.Organizations)
+                                        {
+                                            <option value="@org.Value" selected="@(org.Value == item.OrganizationID.ToString())">
+                                                @org.Text
+                                            </option>
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Role</label>
+                                    <select name="SelectedRole" class="form-select">
+                                        <option value="">-- Select Role (Optional) --</option>
+                                        @foreach (var role in ViewBag.Roles)
+                                        {
+                                            <option value="@role.Value" selected="@(item.Roles.Any(r => r.RoleID.ToString() == role.Value))">
+                                                @role.Text
+                                            </option>
+                                        }
+                                    </select>
+                                </div>
+
+
+                                <div class="mb-3">
+                                    <label class="form-label">Active Status</label>
+                                    <select name="IsActive" class="form-select">
+                                        <option value="true" selected="@(item.IsActive)">Active</option>
+                                        <option value="false" selected="@(!item.IsActive)">Inactive</option>
+                                    </select>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Details Modal -->
+            <div class="modal fade" id="detailsUserModal-@item.UserID" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">User Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-6"><strong>User Name:</strong></div>
+                                <div class="col-6">@item.UserName</div>
+                                <div class="col-6"><strong>Email:</strong></div>
+                                <div class="col-6">@item.Email</div>
+                                <div class="col-6"><strong>User Login ID:</strong></div>
+                                <div class="col-6">@item.UserLoginId</div>
+                                <div class="col-6"><strong>Organization:</strong></div>
+                                <div class="col-6">@item.OrgName (@item.OrgType)</div>
+                                <div class="col-6"><strong>Roles:</strong></div>
+                                <div class="col-6">
+                                    @string.Join(", ", item.Roles.Select(r => r.RoleName))
+                                </div>
+                                <div class="col-6"><strong>Status:</strong></div>
+                                <div class="col-6">@(item.IsActive ? "Active" : "Inactive")</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete User Modal -->
+            <div class="modal fade" id="deleteUserModal-@item.UserID" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Delete User</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete user @item.UserName?</p>
+                            <form action="/User/DeleteConfirmed" method="post">
+                                <input type="hidden" name="id" value="@item.UserID" />
+                                <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+        <!-- Create User Modal -->
+        <div class="modal fade" id="createUserModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Create New User</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/User/Create" method="post">
+                            <div class="mb-3">
+                                <label class="form-label">User Name</label>
+                                <input type="text" name="UserName" class="form-control" required />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" name="Email" class="form-control" required />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">User Login ID</label>
+                                <input type="text" name="UserLoginId" class="form-control" required />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Organization</label>
+                                <select name="OrganizationID" class="form-select" required>
+                                    <option value="">Select Organization</option>
+                                    @foreach (var org in ViewBag.Organizations)
+                                    {
+                                        <option value="@org.Value">@org.Text</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Role (Optional)</label>
+                                <select name="selectedRoles" class="form-select">
+                                    <option value="">Select Role</option>
+                                    @foreach (var role in ViewBag.Roles)
+                                    {
+                                        <option value="@role.Value">@role.Text</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Active Status</label>
+                                <select name="IsActive" class="form-select">
+                                    <option value="true">Active</option>
+                                    <option value="false">Inactive</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-success">Create User</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+     
+</body>
+</html>

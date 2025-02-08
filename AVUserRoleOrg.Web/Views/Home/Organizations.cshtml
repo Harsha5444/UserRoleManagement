@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Organizations</title>
+</head>
+<body>
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Organizations</h2>
+        <table class="table table-striped table-bordered text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Org ID</th>
+                    <th>Organization Name</th>
+                    <th>Organization Type</th>
+                    <th>Created Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.OrgID</td>
+                        <td>@item.OrgName</td>
+                        <td>@item.OrgType</td>
+                        <td>@item.CreatedDate.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
