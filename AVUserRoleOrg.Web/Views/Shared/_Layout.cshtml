@@ -106,7 +106,15 @@
         .dropdown-menu {
             display: none;
         }
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
+        .content {
+            flex: 1;
+        }
         .footer {
             bottom: 0;
             width: 100%;
@@ -190,13 +198,18 @@
         </div>
         <div class="menu-items">
             <a class="menu-item" href="/Home/Index">Home</a>
+            <a class="menu-item" href="/Home/DashBoard">Dashboard</a>
             <a class="menu-item" href="/User/Index">UserMangement</a>
             <a class="menu-item" href="/Home/Organizations">Organizations</a>
             <a class="menu-item" href="/Home/Roles">Roles</a>
         </div>
     </div>
-
-    @RenderBody()
+    <div class="wrapper">
+        <main class="content">
+            @RenderBody()
+        </main>
+    </div>
+  
     <footer>
         <div class="footer">
             <p class="mb-0">© 2025 AnalyticVue, All Rights Reserved.</p>

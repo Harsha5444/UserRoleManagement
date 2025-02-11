@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+    <script src="https://www.amcharts.com/lib/3/serial.js"></script>
+    <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+    <link rel="stylesheet" href="/Content/Dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <h1 class="dashboard-title">Users Dashboard</h1>
+        </header>
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-title">Total Users</div>
+                <div class="metric-value">@Model.TotalUsers</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Active Users</div>
+                <div class="metric-value">@Model.ActiveUsers</div>
+            </div>
+        </div>
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h2 class="chart-title">Organization Wise users</h2>
+                <div id="orgWiseChart" class="chart-container"></div>
+            </div>
+            <div class="chart-card">
+                <h2 class="chart-title">Role Wise Users</h2>
+                <div id="roleWiseChart" class="chart-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var orgWiseData = @Html.Raw(Json.Encode(Model.OrgWiseUsers));
+        var roleWiseData = @Html.Raw(Json.Encode(Model.RoleWiseUsers));
+
+        document.addEventListener("DOMContentLoaded", function () {
+            setTimeout(function () {
+                AmCharts.makeChart("orgWiseChart", {
+                    type: "serial",
+                    theme: "light",
+                    fontFamily: "Segoe UI, Roboto, sans-serif",
+                    dataProvider: orgWiseData,
+                    categoryField: "OrgName",
+                    categoryAxis: { labelRotation: 45, gridPosition: "start", gridAlpha: 0.1, axisAlpha: 0.1 },
+                    valueAxis: { gridAlpha: 0.1, axisAlpha: 0.1, title: "Number of Users" },
+                    graphs: [{ type: "column", fillAlphas: 0.8, lineAlpha: 0.2, fillColors: "#60a5fa", lineColor: "#60a5fa", valueField: "Count", balloonText: "[[category]]: <b>[[value]]</b>", cornerRadiusTop: 4 }],
+                    export: { enabled: true }
+                });
+
+                AmCharts.makeChart("roleWiseChart", {
+                    type: "serial",
+                    theme: "light",
+                    fontFamily: "Segoe UI, Roboto, sans-serif",
+                    dataProvider: roleWiseData,
+                    categoryField: "Rolename",
+                    categoryAxis: { labelRotation: 45, gridPosition: "start", gridAlpha: 0.1, axisAlpha: 0.1 },
+                    valueAxis: { gridAlpha: 0.1, axisAlpha: 0.1, title: "Number of Users" },
+                    graphs: [{ type: "column", fillAlphas: 0.8, lineAlpha: 0.2, valueField: "Count", fillColorsField: "color", lineColorField: "color", colorField: "color", balloonText: "[[category]]: <b>[[value]]</b>", cornerRadiusTop: 4 }],
+                    export: { enabled: true }
+                });
+            }, 200);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="UserRoleOrgDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'UserRoleOrgDB.dbo.Dashboard_Vw' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Dashboard_Vw">
+          <Key>
+            <PropertyRef Name="userid" />
+            <PropertyRef Name="username" />
+          </Key>
+          <Property Name="userid" Type="int" Nullable="false" />
+          <Property Name="username" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Orgname" Type="nvarchar" MaxLength="255" />
+          <Property Name="rolename" Type="nvarchar" MaxLength="100" />
+          <Property Name="isactive" Type="bit" />
+        </EntityType>
+        <EntityContainer Name="UserRoleOrgDBModelStoreContainer">
+          <EntitySet Name="Dashboard_Vw" EntityType="Self.Dashboard_Vw" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Dashboard_Vw].[userid] AS [userid], 
+    [Dashboard_Vw].[username] AS [username], 
+    [Dashboard_Vw].[Orgname] AS [Orgname], 
+    [Dashboard_Vw].[rolename] AS [rolename], 
+    [Dashboard_Vw].[isactive] AS [isactive]
+    FROM [dbo].[Dashboard_Vw] AS [Dashboard_Vw]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="UserRoleOrgDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Dashboard_Vw">
+          <Key>
+            <PropertyRef Name="userid" />
+            <PropertyRef Name="username" />
+          </Key>
+          <Property Name="userid" Type="Int32" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Orgname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="rolename" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="isactive" Type="Boolean" />
+        </EntityType>
+        <EntityContainer Name="UserRoleOrgDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Dashboard_Vw" EntityType="Self.Dashboard_Vw" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="UserRoleOrgDBModelStoreContainer" CdmEntityContainer="UserRoleOrgDBEntities">
+          <EntitySetMapping Name="Dashboard_Vw">
+            <EntityTypeMapping TypeName="UserRoleOrgDBModel.Dashboard_Vw">
+              <MappingFragment StoreEntitySet="Dashboard_Vw">
+                <ScalarProperty Name="isactive" ColumnName="isactive" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="Orgname" ColumnName="Orgname" />
+                <ScalarProperty Name="rolename" ColumnName="rolename" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,34 +1,24 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Roles</title>
-
-</head>
-<body>
-    <div class="container mt-4">
-        <h2 class="text-center mb-4">Roles</h2>
-        <table class="table table-striped table-bordered text-center">
-            <thead class="table-dark">
+﻿<div class="container mt-4">
+    <h2 class="text-center mb-4">Roles</h2>
+    <table class="table table-striped table-bordered text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>Role ID</th>
+                <th>Role Name</th>
+                <th>Role Description</th>
+                <th>Active Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
                 <tr>
-                    <th>Role ID</th>
-                    <th>Role Name</th>
-                    <th>Role Description</th>
-                    <th>Active Status</th>
+                    <td>@item.RoleID</td>
+                    <td>@item.RoleName</td>
+                    <td>@item.RoleDescription</td>
+                    <td>@(item.IsActive ? "Active" : "Inactive")</td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.RoleID</td>
-                        <td>@item.RoleName</td>
-                        <td>@item.RoleDescription</td>
-                        <td>@(item.IsActive ? "Active" : "Inactive")</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</body>
-</html>
+            }
+        </tbody>
+    </table>
+</div>
