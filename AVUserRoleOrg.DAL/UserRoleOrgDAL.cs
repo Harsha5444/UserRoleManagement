@@ -17,162 +17,299 @@ namespace AVUserRoleOrg.DAL
         public List<Organization> GetOrganizations()
         {
             List<Organization> organizations = new List<Organization>();
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            try
             {
-                string query = "SELECT OrgID, OrgName, OrgType, CreatedDate FROM Organization";
-                SqlCommand cmd = new SqlCommand(query, conn);
-                conn.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
+                using (SqlConnection conn = new SqlConnection(_connectionString))
                 {
-                    organizations.Add(new Organization
+                    using (SqlCommand cmd = new SqlCommand("usp_GetOrganizations", conn))
                     {
-                        OrgID = Convert.ToInt32(reader["OrgID"]),
-                        OrgName = reader["OrgName"].ToString(),
-                        OrgType = reader["OrgType"].ToString(),
-                        CreatedDate = Convert.ToDateTime(reader["CreatedDate"])
-                    });
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        conn.Open();
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                organizations.Add(new Organization
+                                {
+                                    OrgID = Convert.ToInt32(reader["OrgID"]),
+                                    OrgName = reader["OrgName"].ToString(),
+                                    OrgType = reader["OrgType"].ToString(),
+                                    CreatedDate = Convert.ToDateTime(reader["CreatedDate"])
+                                });
+                            }
+                        }
+                    }
                 }
             }
+            catch (SqlException ex)
+            {
+                LogExceptionToDatabase(ex.Message, ex.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                LogExceptionToDatabase(ex.Message, ex.StackTrace);
+            }
+
             return organizations;
         }
         public List<Roles> GetRoles()
         {
             List<Roles> roles = new List<Roles>();
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            try
             {
-                string query = "SELECT RoleID, RoleName, RoleDescription, IsActive FROM Roles";
-                SqlCommand cmd = new SqlCommand(query, conn);
-                conn.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
+                using (SqlConnection conn = new SqlConnection(_connectionString))
                 {
-                    roles.Add(new Roles
+                    using (SqlCommand cmd = new SqlCommand("usp_GetRoles", conn))
                     {
-                        RoleID = Convert.ToInt32(reader["RoleID"]),
-                        RoleName = reader["RoleName"].ToString(),
-                        RoleDescription = reader["RoleDescription"].ToString(),
-                        IsActive = Convert.ToBoolean(reader["IsActive"])
-                    });
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        conn.Open();
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                roles.Add(new Roles
+                                {
+                                    RoleID = Convert.ToInt32(reader["RoleID"]),
+                                    RoleName = reader["RoleName"].ToString(),
+                                    RoleDescription = reader["RoleDescription"].ToString(),
+                                    IsActive = Convert.ToBoolean(reader["IsActive"])
+                                });
+                            }
+                        }
+                    }
                 }
+            }
+            catch (SqlException ex)
+            {
+                LogExceptionToDatabase(ex.Message, ex.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                LogExceptionToDatabase(ex.Message, ex.StackTrace);
             }
             return roles;
         }
         public List<Users> GetUsers()
         {
             List<Users> users = new List<Users>();
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            try
             {
-                string query = "SELECT UserID, UserName, Email, UserLoginId, OrganizationID, IsActive FROM Users";
-                SqlCommand cmd = new SqlCommand(query, conn);
-                conn.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
+                using (SqlConnection conn = new SqlConnection(_connectionString))
                 {
-                    users.Add(new Users
+                    using (SqlCommand cmd = new SqlCommand("usp_GetUsers", conn))
                     {
-                        UserID = Convert.ToInt32(reader["UserID"]),
-                        UserName = reader["UserName"].ToString(),
-                        Email = reader["Email"].ToString(),
-                        UserLoginId = reader["UserLoginId"].ToString(),
-                        OrganizationID = reader["OrganizationID"] != DBNull.Value ? Convert.ToInt32(reader["OrganizationID"]) : (int?)null,
-                        IsActive = Convert.ToBoolean(reader["IsActive"])
-                    });
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        conn.Open();
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                users.Add(new Users
+                                {
+                                    UserID = Convert.ToInt32(reader["UserID"]),
+                                    UserName = reader["UserName"].ToString(),
+                                    Email = reader["Email"].ToString(),
+                                    UserLoginId = reader["UserLoginId"].ToString(),
+                                    OrganizationID = reader["OrganizationID"] != DBNull.Value ? Convert.ToInt32(reader["OrganizationID"]) : (int?)null,
+                                    IsActive = Convert.ToBoolean(reader["IsActive"])
+                                });
+                            }
+                        }
+                    }
                 }
+            }
+            catch (SqlException ex)
+            {
+                LogExceptionToDatabase(ex.Message, ex.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                LogExceptionToDatabase(ex.Message, ex.StackTrace);
             }
             return users;
         }
         public List<UserRoles> GetUserRoles()
         {
             List<UserRoles> userRoles = new List<UserRoles>();
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            try
             {
-                string query = "SELECT UserRoleID, UserID, RoleID FROM UserRoles";
-                SqlCommand cmd = new SqlCommand(query, conn);
-                conn.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
+                using (SqlConnection conn = new SqlConnection(_connectionString))
                 {
-                    userRoles.Add(new UserRoles
+                    using (SqlCommand cmd = new SqlCommand("usp_GetUsersRoles", conn))
                     {
-                        UserRoleID = Convert.ToInt32(reader["UserRoleID"]),
-                        UserID = Convert.ToInt32(reader["UserID"]),
-                        RoleID = Convert.ToInt32(reader["RoleID"])
-                    });
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        conn.Open();
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                userRoles.Add(new UserRoles
+                                {
+                                    UserRoleID = Convert.ToInt32(reader["UserRoleID"]),
+                                    UserID = Convert.ToInt32(reader["UserID"]),
+                                    RoleID = Convert.ToInt32(reader["RoleID"])
+                                });
+                            }
+                        }
+                    }
                 }
             }
+            catch (SqlException ex)
+            {
+                LogExceptionToDatabase(ex.Message, ex.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                LogExceptionToDatabase(ex.Message, ex.StackTrace);
+            }
+
             return userRoles;
         }
         public int CreateUser(Users user)
         {
-            using (var connection = new SqlConnection(_connectionString))
+            try
             {
-                var command = new SqlCommand(@"
-                INSERT INTO Users (UserName, Email, UserLoginId, OrganizationID, IsActive)
-                VALUES (@UserName, @Email, @UserLoginId, @OrganizationID, @IsActive); SELECT SCOPE_IDENTITY();", connection);
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    SqlCommand command = new SqlCommand("usp_CreateUser", connection)
+                    {
+                        CommandType = CommandType.StoredProcedure
+                    };
 
-                command.Parameters.AddWithValue("@UserName", user.UserName);
-                command.Parameters.AddWithValue("@Email", user.Email);
-                command.Parameters.AddWithValue("@UserLoginId", user.UserLoginId);
-                command.Parameters.AddWithValue("@OrganizationID", user.OrganizationID);
-                command.Parameters.AddWithValue("@IsActive", user.IsActive);
+                    command.Parameters.AddWithValue("@UserName", user.UserName);
+                    command.Parameters.AddWithValue("@Email", user.Email);
+                    command.Parameters.AddWithValue("@UserLoginId", user.UserLoginId);
+                    command.Parameters.AddWithValue("@OrganizationID", user.OrganizationID);
+                    command.Parameters.AddWithValue("@IsActive", user.IsActive);
 
-                connection.Open();
-                return Convert.ToInt32(command.ExecuteScalar());
+                    SqlParameter outputParameter = new SqlParameter("@UserID", SqlDbType.Int)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    command.Parameters.Add(outputParameter);
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    return Convert.ToInt32(outputParameter.Value);
+                }
+            }
+            catch (SqlException ex)
+            {
+                LogExceptionToDatabase(ex.Message, ex.StackTrace);
+                return -1;
+            }
+            catch (Exception ex)
+            {
+                LogExceptionToDatabase(ex.Message, ex.StackTrace);
+                return -1;
             }
         }
         public void UpdateUser(Users user)
         {
-            using (var connection = new SqlConnection(_connectionString))
+            try
             {
-                var command = new SqlCommand(@"
-                UPDATE Users 
-                SET UserName = @UserName,
-                    Email = @Email,
-                    OrganizationID = @OrganizationID,
-                    UserLoginId = @UserLoginId,
-                    IsActive = @IsActive
-                WHERE UserID = @UserID", connection);
-
-                command.Parameters.AddWithValue("@UserID", user.UserID);
-                command.Parameters.AddWithValue("@UserName", user.UserName);
-                command.Parameters.AddWithValue("@Email", user.Email);
-                command.Parameters.AddWithValue("@OrganizationID", user.OrganizationID);
-                command.Parameters.AddWithValue("@IsActive", user.IsActive);
-                command.Parameters.AddWithValue("@UserLoginId", user.UserLoginId);
-
-                connection.Open();
-                command.ExecuteNonQuery();
-            }
-        }
-        public void UpdateUserRole(int userId, int selectedRole)
-        {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                using (var command = new SqlCommand("usp_UpdateOrInsertUserRole", connection))
+                using (var connection = new SqlConnection(_connectionString))
                 {
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@UserID", userId);
-                    command.Parameters.AddWithValue("@RoleID", selectedRole);
+                    var command = new SqlCommand("usp_UpdateUser", connection)
+                    {
+                        CommandType = CommandType.StoredProcedure
+                    };
+
+                    command.Parameters.AddWithValue("@UserID", user.UserID);
+                    command.Parameters.AddWithValue("@UserName", user.UserName);
+                    command.Parameters.AddWithValue("@Email", user.Email);
+                    command.Parameters.AddWithValue("@OrganizationID", user.OrganizationID);
+                    command.Parameters.AddWithValue("@IsActive", user.IsActive);
+                    command.Parameters.AddWithValue("@UserLoginId", user.UserLoginId);
 
                     connection.Open();
                     command.ExecuteNonQuery();
                 }
             }
+            catch (SqlException ex)
+            {
+                LogExceptionToDatabase(ex.Message, ex.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                LogExceptionToDatabase(ex.Message, ex.StackTrace);
+            }
+        }
+        public void UpdateUserRole(int userId, int selectedRole)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    using (var command = new SqlCommand("usp_UpdateOrInsertUserRole", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@UserID", userId);
+                        command.Parameters.AddWithValue("@RoleID", selectedRole);
+
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                LogExceptionToDatabase(ex.Message, ex.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                LogExceptionToDatabase(ex.Message, ex.StackTrace);
+            }
         }
         public void DeleteUser(int userId)
         {
-            using (var connection = new SqlConnection(_connectionString))
+            try
             {
-                var command = new SqlCommand(@"
-                DELETE From Users 
-                WHERE UserID = @UserID", connection);
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    var command = new SqlCommand("usp_DeleteUser", connection)
+                    {
+                        CommandType = CommandType.StoredProcedure
+                    };
+                    command.Parameters.AddWithValue("@UserID", userId);
 
-                command.Parameters.AddWithValue("@UserID", userId);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException ex)
+            {
+                LogExceptionToDatabase(ex.Message, ex.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                LogExceptionToDatabase(ex.Message, ex.StackTrace);
+            }
+        }
+        private void LogExceptionToDatabase(string message, string stackTrace)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    var command = new SqlCommand("usp_LogException", connection)
+                    {
+                        CommandType = CommandType.StoredProcedure
+                    };
 
-                connection.Open();
-                command.ExecuteNonQuery();
+                    command.Parameters.AddWithValue("@ErrorMessage", message);
+                    command.Parameters.AddWithValue("@ErrorStackTrace", stackTrace);
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error logging exception: " + ex.Message);
             }
         }
     }
 }
+

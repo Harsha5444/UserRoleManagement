@@ -62,6 +62,10 @@ namespace AVUserRoleOrg.Web.Controllers
                     _userRoleOrgBLL.CreateUser(model, roleId);
                     return RedirectToAction(nameof(Index));
                 }
+                else
+                {
+                    ModelState.AddModelError("", "Please fill all required fields correctly.");
+                }
             }
             catch (Exception ex)
             {
@@ -71,6 +75,7 @@ namespace AVUserRoleOrg.Web.Controllers
             ViewBag.Roles = GetRoleSelectList();
             return View("Index", _userRoleOrgBLL.GetAllUserDetails());
         }
+
         [HttpPost]
         public ActionResult Edit(UserDetailViewModel model, int? selectedRole)
         {
