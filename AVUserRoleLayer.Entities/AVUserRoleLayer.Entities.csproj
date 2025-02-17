@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CE556544-E08A-4840-B814-9FCA0F74A96A}</ProjectGuid>
+    <ProjectGuid>{03EC93C3-2848-4ED4-982B-5B74B85442F0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AVUserRoleOrg.DAL</RootNamespace>
-    <AssemblyName>AVUserRoleOrg.DAL</AssemblyName>
+    <RootNamespace>AVUserRoleLayer.Entities</RootNamespace>
+    <AssemblyName>AVUserRoleLayer.Entities</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -38,7 +38,6 @@
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -55,22 +54,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UserRoleOrgDAL.cs" />
+    <Compile Include="UsersContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AVUserRoleLayer.Entities\AVUserRoleLayer.Entities.csproj">
-      <Project>{03ec93c3-2848-4ed4-982b-5b74b85442f0}</Project>
-      <Name>AVUserRoleLayer.Entities</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\AVUserRoleOrg.Models\AVUserRoleOrg.Models.csproj">
       <Project>{674d3beb-2c26-4759-9b65-f74fc97f8713}</Project>
       <Name>AVUserRoleOrg.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVUserRoleOrg.DAL", "AVUserRoleOrg.DAL\AVUserRoleOrg.DAL.csproj", "{CE556544-E08A-4840-B814-9FCA0F74A96A}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVUserRoleOrg.Web", "AVUserRoleOrg.Web\AVUserRoleOrg.Web.csproj", "{1B257086-301C-4FCF-9D38-AB684C766392}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVUserRoleOrg.Models", "AVUserRoleOrg.Models\AVUserRoleOrg.Models.csproj", "{674D3BEB-2C26-4759-9B65-F74FC97F8713}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVUserRoleLayer.Entities", "AVUserRoleLayer.Entities\AVUserRoleLayer.Entities.csproj", "{03EC93C3-2848-4ED4-982B-5B74B85442F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,8 +35,15 @@ Global
 		{674D3BEB-2C26-4759-9B65-F74FC97F8713}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{674D3BEB-2C26-4759-9B65-F74FC97F8713}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{674D3BEB-2C26-4759-9B65-F74FC97F8713}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03EC93C3-2848-4ED4-982B-5B74B85442F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03EC93C3-2848-4ED4-982B-5B74B85442F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03EC93C3-2848-4ED4-982B-5B74B85442F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03EC93C3-2848-4ED4-982B-5B74B85442F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6D9361BA-6409-4191-82B4-9D5F562FE3B7}
 	EndGlobalSection
 EndGlobal

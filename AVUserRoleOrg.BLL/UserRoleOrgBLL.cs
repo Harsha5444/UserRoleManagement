@@ -64,17 +64,18 @@ namespace AVUserRoleOrg.BLL
             };
 
             int userId = _userRoleOrgDAL.CreateUser(user);
-
-            if (selectedRole.HasValue && selectedRole > 0)
+            if (userId > 0)
             {
-                _userRoleOrgDAL.UpdateUserRole(userId, selectedRole.Value);
-            }
-            else
-            {
-                selectedRole = 0;
-                _userRoleOrgDAL.UpdateUserRole(userId, selectedRole.Value);
-            }
-
+                if (selectedRole.HasValue && selectedRole > 0)
+                {
+                    _userRoleOrgDAL.UpdateUserRole(userId, selectedRole.Value);
+                }
+                else
+                {
+                    selectedRole = 0;
+                    _userRoleOrgDAL.UpdateUserRole(userId, selectedRole.Value);
+                }
+            }            
         }
         public void UpdateUser(UserDetailViewModel model, int? selectedRole)
         {

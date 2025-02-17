@@ -1,9 +1,17 @@
-﻿namespace AVUserRoleOrg.Models
+﻿using System.Data.Linq.Mapping;
+
+namespace AVUserRoleOrg.Models
 {
+    [Table(Name = "UserRoles")]
     public class UserRoles
     {
-        public int UserRoleID { get; set; }  // Primary Key
-        public int UserID { get; set; }  // Foreign Key
-        public int RoleID { get; set; }  // Foreign Key
+        [Column(IsPrimaryKey = true, IsDbGenerated = true)]
+        public int UserRoleID { get; set; } 
+
+        [Column]
+        public int UserID { get; set; } 
+
+        [Column]
+        public int RoleID { get; set; } 
     }
 }

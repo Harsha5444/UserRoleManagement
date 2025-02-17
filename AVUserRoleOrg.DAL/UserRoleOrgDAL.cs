@@ -4,6 +4,11 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using LinqToDB;
+using System.Data.Linq;
+using AVUserRoleLayer.Entities;
+using System.Linq;
+
 
 namespace AVUserRoleOrg.DAL
 {
@@ -168,68 +173,107 @@ namespace AVUserRoleOrg.DAL
         }
         public int CreateUser(Users user)
         {
+            //try
+            //{
+            //    using (SqlConnection connection = new SqlConnection(_connectionString))
+            //    {
+            //        SqlCommand command = new SqlCommand("usp_CreateUser", connection)
+            //        {
+            //            CommandType = CommandType.StoredProcedure
+            //        };
+
+            //        command.Parameters.AddWithValue("@UserName", user.UserName);
+            //        command.Parameters.AddWithValue("@Email", user.Email);
+            //        command.Parameters.AddWithValue("@UserLoginId", user.UserLoginId);
+            //        command.Parameters.AddWithValue("@OrganizationID", user.OrganizationID);
+            //        command.Parameters.AddWithValue("@IsActive", user.IsActive);
+
+            //        SqlParameter outputParameter = new SqlParameter("@UserID", SqlDbType.Int)
+            //        {
+            //            Direction = ParameterDirection.Output
+            //        };
+            //        command.Parameters.Add(outputParameter);
+
+            //        connection.Open();
+            //        command.ExecuteNonQuery();
+            //        return Convert.ToInt32(outputParameter.Value);
+            //    }
+            //}
+            //catch (SqlException ex)
+            //{
+            //    LogExceptionToDatabase(ex.Message, ex.StackTrace);
+            //    return -1;
+            //}
+            //catch (Exception ex)
+            //{
+            //    LogExceptionToDatabase(ex.Message, ex.StackTrace);
+            //    return -1;
+            //}
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (var context = new UsersContext(_connectionString))
                 {
-                    SqlCommand command = new SqlCommand("usp_CreateUser", connection)
-                    {
-                        CommandType = CommandType.StoredProcedure
-                    };
-
-                    command.Parameters.AddWithValue("@UserName", user.UserName);
-                    command.Parameters.AddWithValue("@Email", user.Email);
-                    command.Parameters.AddWithValue("@UserLoginId", user.UserLoginId);
-                    command.Parameters.AddWithValue("@OrganizationID", user.OrganizationID);
-                    command.Parameters.AddWithValue("@IsActive", user.IsActive);
-
-                    SqlParameter outputParameter = new SqlParameter("@UserID", SqlDbType.Int)
-                    {
-                        Direction = ParameterDirection.Output
-                    };
-                    command.Parameters.Add(outputParameter);
-
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                    return Convert.ToInt32(outputParameter.Value);
+                    context.Users.InsertOnSubmit(user);
+                    context.SubmitChanges();
+                    return user.UserID;  
                 }
-            }
-            catch (SqlException ex)
-            {
-                LogExceptionToDatabase(ex.Message, ex.StackTrace);
-                return -1;
             }
             catch (Exception ex)
             {
                 LogExceptionToDatabase(ex.Message, ex.StackTrace);
-                return -1;
+                return -1; 
             }
         }
         public void UpdateUser(Users user)
         {
+            //try
+            //{
+            //    using (var connection = new SqlConnection(_connectionString))
+            //    {
+            //        var command = new SqlCommand("usp_UpdateUser", connection)
+            //        {
+            //            CommandType = CommandType.StoredProcedure
+            //        };
+
+            //        command.Parameters.AddWithValue("@UserID", user.UserID);
+            //        command.Parameters.AddWithValue("@UserName", user.UserName);
+            //        command.Parameters.AddWithValue("@Email", user.Email);
+            //        command.Parameters.AddWithValue("@OrganizationID", user.OrganizationID);
+            //        command.Parameters.AddWithValue("@IsActive", user.IsActive);
+            //        command.Parameters.AddWithValue("@UserLoginId", user.UserLoginId);
+
+            //        connection.Open();
+            //        command.ExecuteNonQuery();
+            //    }
+            //}
+            //catch (SqlException ex)
+            //{
+            //    LogExceptionToDatabase(ex.Message, ex.StackTrace);
+            //}
+            //catch (Exception ex)
+            //{
+            //    LogExceptionToDatabase(ex.Message, ex.StackTrace);
+            //}
             try
             {
-                using (var connection = new SqlConnection(_connectionString))
+                using (var context = new UsersContext(_connectionString))
                 {
-                    var command = new SqlCommand("usp_UpdateUser", connection)
+                    var existingUser = context.Users.SingleOrDefault(u => u.UserID == user.UserID);
+
+                    if (existingUser != null)
                     {
-                        CommandType = CommandType.StoredProcedure
-                    };
-
-                    command.Parameters.AddWithValue("@UserID", user.UserID);
-                    command.Parameters.AddWithValue("@UserName", user.UserName);
-                    command.Parameters.AddWithValue("@Email", user.Email);
-                    command.Parameters.AddWithValue("@OrganizationID", user.OrganizationID);
-                    command.Parameters.AddWithValue("@IsActive", user.IsActive);
-                    command.Parameters.AddWithValue("@UserLoginId", user.UserLoginId);
-
-                    connection.Open();
-                    command.ExecuteNonQuery();
+                        existingUser.UserName = user.UserName;
+                        existingUser.Email = user.Email;
+                        existingUser.UserLoginId = user.UserLoginId;
+                        existingUser.OrganizationID = user.OrganizationID;
+                        existingUser.IsActive = user.IsActive;
+                        context.SubmitChanges();
+                    }
+                    else
+                    {
+                        throw new Exception("User not found.");
+                    }
                 }
-            }
-            catch (SqlException ex)
-            {
-                LogExceptionToDatabase(ex.Message, ex.StackTrace);
             }
             catch (Exception ex)
             {
@@ -238,24 +282,61 @@ namespace AVUserRoleOrg.DAL
         }
         public void UpdateUserRole(int userId, int selectedRole)
         {
+            //try
+            //{
+            //    using (var connection = new SqlConnection(_connectionString))
+            //    {
+            //        using (var command = new SqlCommand("usp_UpdateOrInsertUserRole", connection))
+            //        {
+            //            command.CommandType = CommandType.StoredProcedure;
+            //            command.Parameters.AddWithValue("@UserID", userId);
+            //            command.Parameters.AddWithValue("@RoleID", selectedRole);
+
+            //            connection.Open();
+            //            command.ExecuteNonQuery();
+            //        }
+            //    }
+            //}
+            //catch (SqlException ex)
+            //{
+            //    LogExceptionToDatabase(ex.Message, ex.StackTrace);
+            //}
+            //catch (Exception ex)
+            //{
+            //    LogExceptionToDatabase(ex.Message, ex.StackTrace);
+            //}
             try
             {
-                using (var connection = new SqlConnection(_connectionString))
+                using (var context = new UsersContext(_connectionString))
                 {
-                    using (var command = new SqlCommand("usp_UpdateOrInsertUserRole", connection))
-                    {
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.AddWithValue("@UserID", userId);
-                        command.Parameters.AddWithValue("@RoleID", selectedRole);
+                    var userRole = context.UserRoles.FirstOrDefault(ur => ur.UserID == userId);
 
-                        connection.Open();
-                        command.ExecuteNonQuery();
+                    if (selectedRole == 0)
+                    {
+                        if (userRole != null)
+                        {
+                            context.UserRoles.DeleteOnSubmit(userRole);
+                            context.SubmitChanges();
+                        }
+                    }
+                    else
+                    {
+                        if (userRole != null)
+                        {
+                            userRole.RoleID = selectedRole;
+                        }
+                        else
+                        {
+                            var newUserRole = new UserRoles
+                            {
+                                UserID = userId,
+                                RoleID = selectedRole
+                            };
+                            context.UserRoles.InsertOnSubmit(newUserRole);
+                        }
+                        context.SubmitChanges();
                     }
                 }
-            }
-            catch (SqlException ex)
-            {
-                LogExceptionToDatabase(ex.Message, ex.StackTrace);
             }
             catch (Exception ex)
             {
@@ -289,27 +370,21 @@ namespace AVUserRoleOrg.DAL
         }
         private void LogExceptionToDatabase(string message, string stackTrace)
         {
-            try
+            using (var connection = new SqlConnection(_connectionString))
             {
-                using (var connection = new SqlConnection(_connectionString))
+                var command = new SqlCommand("usp_LogException", connection)
                 {
-                    var command = new SqlCommand("usp_LogException", connection)
-                    {
-                        CommandType = CommandType.StoredProcedure
-                    };
+                    CommandType = CommandType.StoredProcedure
+                };
 
-                    command.Parameters.AddWithValue("@ErrorMessage", message);
-                    command.Parameters.AddWithValue("@ErrorStackTrace", stackTrace);
+                command.Parameters.AddWithValue("@ErrorMessage", message);
+                command.Parameters.AddWithValue("@ErrorStackTrace", stackTrace);
 
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error logging exception: " + ex.Message);
+                connection.Open();
+                command.ExecuteNonQuery();
             }
         }
     }
 }
+
 
