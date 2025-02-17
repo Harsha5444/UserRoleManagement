@@ -59,9 +59,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AVUserRoleLayer.Entities\AVUserRoleLayer.Entities.csproj">
+    <ProjectReference Include="..\AVUserRoleLayer.Entities\AVUserRoleOrg.Services.csproj">
       <Project>{03ec93c3-2848-4ed4-982b-5b74b85442f0}</Project>
-      <Name>AVUserRoleLayer.Entities</Name>
+      <Name>AVUserRoleOrg.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\AVUserRoleOrg.Models\AVUserRoleOrg.Models.csproj">
       <Project>{674d3beb-2c26-4759-9b65-f74fc97f8713}</Project>

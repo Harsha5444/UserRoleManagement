@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVUserRoleOrg.Web", "AVUser
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVUserRoleOrg.Models", "AVUserRoleOrg.Models\AVUserRoleOrg.Models.csproj", "{674D3BEB-2C26-4759-9B65-F74FC97F8713}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVUserRoleLayer.Entities", "AVUserRoleLayer.Entities\AVUserRoleLayer.Entities.csproj", "{03EC93C3-2848-4ED4-982B-5B74B85442F0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVUserRoleOrg.Services", "AVUserRoleLayer.Entities\AVUserRoleOrg.Services.csproj", "{03EC93C3-2848-4ED4-982B-5B74B85442F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

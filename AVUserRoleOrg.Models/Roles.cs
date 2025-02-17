@@ -2,9 +2,9 @@
 {
     public class Roles
     {
-        public int RoleID { get; set; }  // Primary Key
-        public string RoleName { get; set; } = string.Empty;
-        public string RoleDescription { get; set; } = string.Empty;
-        public bool IsActive { get; set; } = true;  // Default to active
+        public int RoleID { get; set; }
+        public string RoleName { get; set; }
+        public string RoleDescription { get; set; }
+        public bool IsActive { get; set; } = true;  
     }
 }

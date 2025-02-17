@@ -9,13 +9,13 @@ namespace AVUserRoleOrg.Models
         public int UserID { get; set; }
 
         [Column]
-        public string UserName { get; set; } = null;
+        public string UserName { get; set; }
 
         [Column]
-        public string Email { get; set; } = null;
+        public string Email { get; set; }
 
         [Column]
-        public string UserLoginId { get; set; } = null;
+        public string UserLoginId { get; set; }
 
         [Column]
         public int? OrganizationID { get; set; }

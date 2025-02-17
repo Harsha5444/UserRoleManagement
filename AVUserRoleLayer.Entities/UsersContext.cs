@@ -1,7 +1,7 @@
 ﻿using AVUserRoleOrg.Models;
 using System.Data.Linq;
 
-namespace AVUserRoleLayer.Entities
+namespace AVUserRoleOrg.Services
 {
     public class UsersContext : DataContext
     {

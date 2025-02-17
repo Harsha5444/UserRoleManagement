@@ -1,12 +1,10 @@
-﻿using AVUserRoleOrg.Models;
+﻿using AVUserRoleOrg.Services;
+using AVUserRoleOrg.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using LinqToDB;
-using System.Data.Linq;
-using AVUserRoleLayer.Entities;
 using System.Linq;
 
 
@@ -215,13 +213,13 @@ namespace AVUserRoleOrg.DAL
                 {
                     context.Users.InsertOnSubmit(user);
                     context.SubmitChanges();
-                    return user.UserID;  
+                    return user.UserID;
                 }
             }
             catch (Exception ex)
             {
                 LogExceptionToDatabase(ex.Message, ex.StackTrace);
-                return -1; 
+                return -1;
             }
         }
         public void UpdateUser(Users user)
@@ -310,7 +308,6 @@ namespace AVUserRoleOrg.DAL
                 using (var context = new UsersContext(_connectionString))
                 {
                     var userRole = context.UserRoles.FirstOrDefault(ur => ur.UserID == userId);
-
                     if (selectedRole == 0)
                     {
                         if (userRole != null)
@@ -347,16 +344,15 @@ namespace AVUserRoleOrg.DAL
         {
             try
             {
-                using (var connection = new SqlConnection(_connectionString))
+                using (var db = new UsersContext(_connectionString))
                 {
-                    var command = new SqlCommand("usp_DeleteUser", connection)
-                    {
-                        CommandType = CommandType.StoredProcedure
-                    };
-                    command.Parameters.AddWithValue("@UserID", userId);
+                    var userToDelete = db.Users.SingleOrDefault(u => u.UserID == userId);
 
-                    connection.Open();
-                    command.ExecuteNonQuery();
+                    if (userToDelete != null)
+                    {
+                        db.Users.DeleteOnSubmit(userToDelete);
+                        db.SubmitChanges();
+                    }
                 }
             }
             catch (SqlException ex)
@@ -367,6 +363,7 @@ namespace AVUserRoleOrg.DAL
             {
                 LogExceptionToDatabase(ex.Message, ex.StackTrace);
             }
+
         }
         private void LogExceptionToDatabase(string message, string stackTrace)
         {
